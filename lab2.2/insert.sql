@@ -1,7 +1,7 @@
 INSERT INTO account (login, password, first_name, last_name, birth_date, email, phone, status) 
 VALUES
 -- Educators
-('e.smirnov', 'TeachPass1', 'Егор', 'Смирнов', '1975-03-14', 'e.smirnov@univ.example', '+7-900-100-0101', 'educator'),
+('e.smirnov', 'TeachPass1', 'Егор', 'Смирнов', '1975-03-14', 'e.smirnounivexample', '+7-900-100-0101', 'educator'),
 ('a.ivanova', 'TeachPass2', 'Алёна', 'Иванова', '1980-11-22', 'a.ivanova@univ.example', '+7-900-100-0102', 'educator'),
 ('p.petrov',  'TeachPass3', 'Павел', 'Петров', '1969-07-05', 'p.petrov@univ.example', '+7-900-100-0103', 'educator'),
 ('n.kuznetsov','TeachPass4', 'Наталья', 'Кузнецова', '1985-01-30', 'n.kuznetsov@univ.example','+7-900-100-0104', 'educator'),

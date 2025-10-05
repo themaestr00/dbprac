@@ -71,7 +71,7 @@ CREATE TABLE room (
 	id SERIAL PRIMARY KEY,
 	name TEXT NOT NULL,
 	building_id INT NOT NULL REFERENCES building(id) ON DELETE CASCADE,
-	capacity INT CHECK (capacity >= 0),
+	capacity SMALLINT CHECK (capacity >= 0),
 
 	CONSTRAINT room_building_unique UNIQUE (name, building_id)
 );
@@ -150,12 +150,12 @@ CREATE TABLE individual_course (
 );
 
 CREATE TABLE course_registration (
-	student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
-	course_id INT NOT NULL REFERENCES individual_course(id) ON DELETE CASCADE,
-	term SMALLINT NOT NULL CHECK (term BETWEEN 1 AND 12),
+	student_id INT REFERENCES student(id) ON DELETE CASCADE,
+	course_id INT REFERENCES individual_course(id) ON DELETE CASCADE,
+	term SMALLINT CHECK (term BETWEEN 1 AND 12),
 	score_value SMALLINT NOT NULL CHECK (score_value BETWEEN 0 AND 5),
 
-	PRIMARY KEY (student_id, course_id)
+	PRIMARY KEY (student_id, course_id, term)
 );
 
 CREATE TABLE score (
