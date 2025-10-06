@@ -1,7 +1,7 @@
 INSERT INTO account (login, password, first_name, last_name, birth_date, email, phone, status) 
 VALUES
 -- Educators
-('e.smirnov', 'TeachPass1', 'Егор', 'Смирнов', '1975-03-14', 'e.smirnounivexample', '+7-900-100-0101', 'educator'),
+('e.smirnov', 'TeachPass1', 'Егор', 'Смирнов', '1975-03-14', 'e.smirnov@univ.example', '+7-900-100-0101', 'educator'),
 ('a.ivanova', 'TeachPass2', 'Алёна', 'Иванова', '1980-11-22', 'a.ivanova@univ.example', '+7-900-100-0102', 'educator'),
 ('p.petrov',  'TeachPass3', 'Павел', 'Петров', '1969-07-05', 'p.petrov@univ.example', '+7-900-100-0103', 'educator'),
 ('n.kuznetsov','TeachPass4', 'Наталья', 'Кузнецова', '1985-01-30', 'n.kuznetsov@univ.example','+7-900-100-0104', 'educator'),
@@ -71,12 +71,12 @@ INSERT INTO faculty (name, dean) VALUES
 ('Географический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='e.smirnov')),
 ('Филологический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='a.ivanova')),
 ('Механико-математический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='p.petrov')),
-('Факультет журналистики', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='n.kuznetsov'));
+('Факультет журналистики', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='n.kuznetsov')),
 ('Экономический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='m.popova')),
 ('Исторический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='d.volkov')),
 ('Биологический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='o.lebedeva')),
 ('Физический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='s.morozov')),
-('Химический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='t.belova')),
+('Химический факультет', (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='t.belova'));
 
 
 INSERT INTO speciality (speciality_code, name, quota, faculty_id) VALUES
@@ -84,12 +84,12 @@ INSERT INTO speciality (speciality_code, name, quota, faculty_id) VALUES
 ('05.03.02', 'География', 70, (SELECT id FROM faculty WHERE name='Географический факультет')),
 ('45.03.01', 'Филология', 85, (SELECT id FROM faculty WHERE name='Филологический факультет')),
 ('02.03.01', 'Математика и компьютерные науки', 110, (SELECT id FROM faculty WHERE name='Механико-математический факультет')),
-('42.03.02', 'Журналистика', 130, (SELECT id FROM faculty WHERE name='Факультет журналистики'));
+('42.03.02', 'Журналистика', 130, (SELECT id FROM faculty WHERE name='Факультет журналистики')),
 ('38.03.01', 'Экономика', 160, (SELECT id FROM faculty WHERE name='Экономический факультет')),
 ('46.03.01', 'История', 80, (SELECT id FROM faculty WHERE name='Исторический факультет')),
 ('06.03.01', 'Биология', 90, (SELECT id FROM faculty WHERE name='Биологический факультет')),
 ('03.03.02', 'Физика', 150, (SELECT id FROM faculty WHERE name='Физический факультет')),
-('04.03.01', 'Химия', 100, (SELECT id FROM faculty WHERE name='Химический факультет')),
+('04.03.01', 'Химия', 100, (SELECT id FROM faculty WHERE name='Химический факультет'));
 
 
 INSERT INTO education (speciality_code, basis, type) VALUES
@@ -333,7 +333,7 @@ SELECT l.id, g.id
 FROM lesson l
 JOIN discipline d ON d.id = l.discipline_id
 JOIN academic_group g ON g.group_number = 110
-WHERE d.name = 'Экономическая теория' AND l.day='thursday' AND l.scheduled_start='12:50-';
+WHERE d.name = 'Экономическая теория' AND l.day='thursday' AND l.scheduled_start='12:50';
 
 -- 8 Физическая география материков: группы 109 (География) и 105 (Биология)
 INSERT INTO lesson_group (lesson_id, group_id)
@@ -391,7 +391,7 @@ INSERT INTO educational_status (term, valid_from, valid_to, status) VALUES
 (7, '2027-09-01', '2028-01-31', 'active'),
 (8, '2028-02-01', '2028-06-30', 'active'),
 (9, '2028-09-01', '2029-01-31', 'active'),
-(10,'2029-02-01', NULL, 'graduated');
+(NULL,'2029-02-01', NULL, 'graduated');
 
 
 INSERT INTO stipend (amount) VALUES
@@ -494,37 +494,37 @@ INSERT INTO student (account_id, acception_date, group_id, education_id, stipend
 );
 
 
-INSERT INTO individual_course (name, type, educator_id, load, room_id) VALUES
+INSERT INTO individual_course (name, type, educator_id, load, day, scheduled_start, scheduled_end, room_id) VALUES
 ('Анализ данных в Python', 'inter-faculty course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='i.sokolov'),
-  72, (SELECT r.id FROM room r WHERE r.name='528')),
+  72, 'monday', '15:10', '16:40', (SELECT r.id FROM room r WHERE r.name='528')),
 ('Научное письмо', 'special seminar',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='a.ivanova'),
-  36, (SELECT r.id FROM room r WHERE r.name='222')),
+  36, 'tuesday', '15:10', '16:40', (SELECT r.id FROM room r WHERE r.name='222')),
 ('Предпринимательство в науке', 'elective',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='m.popova'),
-  48, (SELECT r.id FROM room r WHERE r.name='333')),
+  48, 'wednesday', '17:00', '18:30', (SELECT r.id FROM room r WHERE r.name='333')),
 ('Современные проблемы физики', 'special course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='s.morozov'),
-  54, (SELECT r.id FROM room r WHERE r.name='ЮФА')),
+  54, 'thursday', '17:00', '18:30', (SELECT r.id FROM room r WHERE r.name='ЮФА')),
 ('Молекулярная биология', 'special course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='o.lebedeva'),
-  60, (SELECT r.id FROM room r WHERE r.name='532')),
+  60, 'friday', '17:00', '18:30', (SELECT r.id FROM room r WHERE r.name='532')),
 ('Геоинформационные системы', 'inter-faculty course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='e.smirnov'),
-  72, (SELECT r.id FROM room r WHERE r.name='ГЗ-02')),
+  72, 'monday', '17:00', '18:30', (SELECT r.id FROM room r WHERE r.name='ГЗ-02')),
 ('Финансовая аналитика', 'special course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='m.popova'),
-  72, (SELECT r.id FROM room r WHERE r.name='333')),
+  72, 'tuesday', '17:00', '18:30', (SELECT r.id FROM room r WHERE r.name='333')),
 ('История мировой культуры', 'inter-faculty course',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='d.volkov'),
-  48, (SELECT r.id FROM room r WHERE r.name='ГЗ-01')),
+  48, 'wednesday', '15:10', '16:40', (SELECT r.id FROM room r WHERE r.name='ГЗ-01')),
 ('Практическая журналистика', 'special seminar',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='n.kuznetsov'),
-  36, (SELECT r.id FROM room r WHERE r.name='Ш-101')),
+  36, 'thursday', '15:10', '16:40', (SELECT r.id FROM room r WHERE r.name='Ш-101')),
 ('Органическая спектроскопия', 'elective',
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='t.belova'),
-  54, (SELECT r.id FROM room r WHERE r.name='101'));
+  54, 'friday', '15:10', '16:40', (SELECT r.id FROM room r WHERE r.name='101'));
 
 
 INSERT INTO course_registration (student_id, course_id, term, score_value) VALUES

@@ -23,8 +23,8 @@ CREATE TABLE account (
 	first_name VARCHAR(100) NOT NULL,
 	last_name VARCHAR(100) NOT NULL,
 	birth_date DATE NOT NULL,
-	email VARCHAR(254) CHECK (email ~ '^\S+@\S+\.\S+$'),
-	phone VARCHAR(32),
+	email VARCHAR(254) UNIQUE CHECK (email ~ '^\S+@\S+\.\S+$'),
+	phone VARCHAR(32) UNIQUE,
 	status account_role NOT NULL
 );
 
@@ -105,7 +105,9 @@ CREATE TABLE lesson (
 CREATE TABLE academic_group (
 	id SERIAL PRIMARY KEY,
 	speciality_code VARCHAR(32) NOT NULL REFERENCES speciality(speciality_code) ON DELETE RESTRICT,
-	group_number SMALLINT NOT NULL
+	group_number SMALLINT NOT NULL,
+
+	UNIQUE (speciality_code, group_number)
 );
 
 CREATE TABLE lesson_group (
@@ -117,7 +119,7 @@ CREATE TABLE lesson_group (
 
 CREATE TABLE educational_status (
 	id SERIAL PRIMARY KEY,
-	term SMALLINT NOT NULL CHECK (term BETWEEN 1 AND 12),
+	term SMALLINT CHECK (term BETWEEN 1 AND 12),
 	valid_from DATE NOT NULL,
 	valid_to DATE,
 	status edu_status NOT NULL
@@ -146,7 +148,12 @@ CREATE TABLE individual_course (
 	type individual_course_type NOT NULL,
 	educator_id INT NOT NULL REFERENCES educator(id) ON DELETE RESTRICT,
 	load INT NOT NULL CHECK (load > 0),
-	room_id INT NOT NULL REFERENCES room(id) ON DELETE RESTRICT
+	day weekday NOT NULL,
+	scheduled_start TIME NOT NULL,
+	scheduled_end TIME NOT NULL,
+	room_id INT NOT NULL REFERENCES room(id) ON DELETE RESTRICT,
+
+	CHECK (scheduled_start < scheduled_end)
 );
 
 CREATE TABLE course_registration (
@@ -163,7 +170,7 @@ CREATE TABLE score (
 	discipline_id INT NOT NULL REFERENCES discipline(id) ON DELETE RESTRICT,
 	educator_id INT REFERENCES educator(id) ON DELETE SET NULL,
 	student_id INT NOT NULL REFERENCES student(id) ON DELETE CASCADE,
-	score_value SMALLINT NOT NULL CHECK (score_value BETWEEN 0 AND 5),
+	score_value SMALLINT NOT NULL CHECK (score_value BETWEEN 2 AND 5),
 	term SMALLINT NOT NULL CHECK (term BETWEEN 1 AND 12)
 );
 
