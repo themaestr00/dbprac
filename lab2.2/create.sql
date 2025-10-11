@@ -138,7 +138,7 @@ CREATE TABLE student (
 	acception_date DATE NOT NULL,
 	group_id INT NOT NULL REFERENCES academic_group(id) ON DELETE RESTRICT,
 	education_id INT NOT NULL REFERENCES education(id) ON DELETE RESTRICT,
-	stipend_type INT NOT NULL REFERENCES stipend(type) ON DELETE RESTRICT,
+	stipend_type INT NOT NULL REFERENCES stipend(type) ON DELETE RESTRICT DEFAULT 2,
 	status_id INT NOT NULL REFERENCES educational_status(id) ON DELETE RESTRICT
 );
 

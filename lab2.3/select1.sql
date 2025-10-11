@@ -1,4 +1,5 @@
 --- 1. Полное расписание группы 101 с ВМК
+
 SELECT
 	l.day AS day,
 	l.parity AS parity,

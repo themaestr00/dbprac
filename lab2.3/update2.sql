@@ -10,6 +10,7 @@ WITH results AS (
 	JOIN educational_status es ON es.id = s.status_id
 	JOIN education e ON e.id = s.education_id
 	LEFT JOIN score sc ON sc.student_id = s.id AND sc.term = es.term
+	WHERE es.status = 'active'
 	GROUP BY s.id, e.basis
 )
 UPDATE student AS s

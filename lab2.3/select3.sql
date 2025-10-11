@@ -1,4 +1,5 @@
 --- 3. Публикационная активность преподавателей
+
 SELECT
 	e.id AS educator_id,
 	CONCAT(acc_t.first_name, ' ', acc_t.last_name) AS educator_name,

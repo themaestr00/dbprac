@@ -171,6 +171,12 @@ INSERT INTO lesson (day, scheduled_start, scheduled_end, discipline_id, educator
   (SELECT r.id FROM room r WHERE r.name='СФА'),
   'all'),
 
+('tuesday', '08:45', '10:20',
+  (SELECT id FROM discipline WHERE name='Алгоритмы и структуры данных'),
+  (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='i.sokolov'),
+  (SELECT r.id FROM room r WHERE r.name='П-6'),
+  'all'),
+
 ('tuesday', '10:30', '12:05',
   (SELECT id FROM discipline WHERE name='Органическая химия'),
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='t.belova'),
