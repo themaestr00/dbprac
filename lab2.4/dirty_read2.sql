@@ -1,0 +1,5 @@
+BEGIN ISOLATION LEVEL READ UNCOMMITTED;
+SELECT COUNT(*) AS cnt, AVG(score_value) AS avg_score
+FROM score
+WHERE student_id = 1;
+COMMIT;

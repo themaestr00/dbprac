@@ -94,7 +94,7 @@ INSERT INTO speciality (speciality_code, name, quota, faculty_id) VALUES
 
 INSERT INTO education (speciality_code, basis, type) VALUES
 ('01.03.02', 'budget', 'full_time'),
-('03.03.02', 'budget', 'full_time'),
+('03.03.02', 'contract', 'full_time'),
 ('02.03.01', 'budget', 'full_time'),
 ('04.03.01', 'budget', 'full_time'),
 ('06.03.01', 'budget', 'full_time'),
@@ -102,7 +102,8 @@ INSERT INTO education (speciality_code, basis, type) VALUES
 ('46.03.01', 'budget', 'full_time'),
 ('45.03.01', 'budget', 'full_time'),
 ('05.03.02', 'budget', 'full_time'),
-('42.03.02', 'contract','part_time');
+('42.03.02', 'contract','part_time'),
+('03.03.02', 'budget', 'full_time');
 
 
 INSERT INTO building (address, name) VALUES
@@ -156,6 +157,12 @@ INSERT INTO lesson (day, scheduled_start, scheduled_end, discipline_id, educator
   (SELECT id FROM discipline WHERE name='Алгоритмы и структуры данных'),
   (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='i.sokolov'),
   (SELECT r.id FROM room r WHERE r.name='П-6'),
+  'all'),
+
+('monday', '08:45', '10:20',
+  (SELECT id FROM discipline WHERE name='Общая физика: механика'),
+  (SELECT e.id FROM educator e JOIN account a ON a.id=e.account_id WHERE a.login='s.morozov'),
+  (SELECT r.id FROM room r WHERE r.name='СФА'),
   'all'),
 
 ('monday', '10:30', '12:05',
@@ -422,7 +429,7 @@ INSERT INTO student (account_id, acception_date, group_id, education_id, stipend
   (SELECT id FROM account WHERE login='st.petrov1'),
   '2024-09-01',
   (SELECT id FROM academic_group WHERE group_number=102),
-  (SELECT id FROM education WHERE speciality_code='03.03.02'),
+  (SELECT id FROM education WHERE speciality_code='03.03.02' AND basis = 'contract'),
   2,
   1
 ),

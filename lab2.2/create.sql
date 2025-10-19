@@ -153,14 +153,26 @@ CREATE TABLE individual_course (
 	scheduled_end TIME NOT NULL,
 	room_id INT NOT NULL REFERENCES room(id) ON DELETE RESTRICT,
 
-	CHECK (scheduled_start < scheduled_end)
+	CHECK (scheduled_start < scheduled_end),
+
+	EXCLUDE USING GIST (
+		educator_id WITH =,
+		day WITH =,
+		timerange(scheduled_start, scheduled_end) WITH &&
+	),
+
+	EXCLUDE USING GIST (
+		room_id WITH =,
+		day WITH =,
+		timerange(scheduled_start, scheduled_end) WITH &&
+	)
 );
 
 CREATE TABLE course_registration (
 	student_id INT REFERENCES student(id) ON DELETE CASCADE,
 	course_id INT REFERENCES individual_course(id) ON DELETE CASCADE,
 	term SMALLINT CHECK (term BETWEEN 1 AND 12),
-	score_value SMALLINT NOT NULL CHECK (score_value BETWEEN 0 AND 5),
+	score_value SMALLINT NOT NULL CHECK (score_value BETWEEN 0 AND 5) DEFAULT 0,
 
 	PRIMARY KEY (student_id, course_id, term)
 );
